@@ -1,6 +1,7 @@
 import socket
 import time
- 
+
+import zoneController
  
 appsock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
  
@@ -21,6 +22,13 @@ class appZone():
         self.green = green
         self.blue = blue
 
+def ledPop(indexHigh,indexLow,size,r,g,b):
+    data = [4,2,indexHigh,indexLow]
+    for x in range(size):
+        data.append(r)
+        data.append(g)
+        data.append(b)
+    return bytearray(data)
 
 def parseRawPacket(packet):
     packetLen = len(packet)
@@ -31,31 +39,34 @@ def parseRawPacket(packet):
         zonesChanged = (packetLen-2)//4
         print("LED Command Data for ", zonesChanged, " zones")
         rawCmd = packet[2:packetLen]
-        test = []
+        parsedCmd = []
         
         for zone in range(zonesChanged):
             zoneIndex = (zone*4)
             zoneR =((zone*4)+1)
             zoneG =((zone*4)+2)
             zoneB =((zone*4)+3)
-            test.append(appZone(rawCmd[zoneIndex],rawCmd[zoneR],rawCmd[zoneG],rawCmd[zoneB]))
-
+            parsedCmd.append(appZone(rawCmd[zoneIndex],rawCmd[zoneR],rawCmd[zoneG],rawCmd[zoneB]))
+        wled = []
             #Print test obj
-        for x in test:
-            print("Zone: ", x.index, "RGB: ", x.red,":",x.green,":",x.blue)
+        for cmd in parsedCmd:
+            print("Zone: ", cmd.index, "RGB: ", cmd.red,":",cmd.green,":",cmd.blue)
+            
+            Message = ledPop(0, 10, 100,app[3],app[4],app[5])
+            clientSock.sendto (Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
+            
+
+
+
+
+
         print("End of packet \n\n")
 
 
     else:
         print("Bad Packet")
 
-def ledPop(indexHigh,indexLow,size,r,g,b):
-    data = [4,2,indexHigh,indexLow]
-    for x in range(size):
-        data.append(r)
-        data.append(g)
-        data.append(b)
-    return bytearray(data)
+
 
 clientSock = socket.socket (socket.AF_INET, socket.SOCK_DGRAM)
 
