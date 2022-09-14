@@ -1,22 +1,22 @@
 class ledZone():
-    def __init__(self, zoneId, indexStart, indexStop):
+    def __init__(self, zoneId, indexStart, indexSize):
         self.zoneId = zoneId
         self.indexStart = indexStart
-        self.indexStop = indexStop
+        self.indexSize = indexSize
 
 class zoneController():
     #Manually added zones
     ledZones = [
         ledZone(0,0,49),
-        ledZone(1,50,99),
-        ledZone(2,100,149),
-        ledZone(3,150,199),
-        ledZone(4,200,249),
-        ledZone(5,250,299),
-        ledZone(6,300,349),
-        ledZone(7,350,399),
-        ledZone(8,400,449),
-        ledZone(9,500,549)
+        ledZone(1,50,49),
+        ledZone(2,100,49),
+        ledZone(3,150,49),
+        ledZone(4,200,49),
+        ledZone(5,250,49),
+        ledZone(6,300,49),
+        ledZone(7,350,49),
+        ledZone(8,400,49),
+        ledZone(9,500,49)
     ]
 
     def addZone(self, zone):

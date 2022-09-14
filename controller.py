@@ -13,7 +13,8 @@ appsock.bind((udp_app,app_port))
 UDP_IP_ADDRESS = "127.0.0.1"
 UDP_PORT_NO = 55330
 index = 0
- 
+
+zoneC = zoneController()
 
 class appZone():
     def __init__(self, index, red, green, blue):
@@ -22,8 +23,14 @@ class appZone():
         self.green = green
         self.blue = blue
 
-def ledPop(indexHigh,indexLow,size,r,g,b):
-    data = [4,2,indexHigh,indexLow]
+def ledPop(zone, r,g,b):
+    zoneId = zone.zoneId
+    high = zone.indexStart // 255
+    low = zone.indexStart % 255
+    size = zone.indexSize
+
+
+    data = [4,2,high,low]
     for x in range(size):
         data.append(r)
         data.append(g)
@@ -51,8 +58,8 @@ def parseRawPacket(packet):
             #Print test obj
         for cmd in parsedCmd:
             print("Zone: ", cmd.index, "RGB: ", cmd.red,":",cmd.green,":",cmd.blue)
-            
-            Message = ledPop(0, 10, 100,app[3],app[4],app[5])
+
+            Message = ledPop(zoneC.getZoneById(cmd.index), cmd.red, cmd.green, cmd.blue)
             clientSock.sendto (Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
             
 
@@ -65,6 +72,7 @@ def parseRawPacket(packet):
 
     else:
         print("Bad Packet")
+
 
 
 
