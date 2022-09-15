@@ -42,5 +42,3 @@ class zoneController():
     def printZone(self, zone):
         print("Zone ",zone.zoneId, "Start: ",zone.indexStart, " Stop: ",zone.indexStop )
 
-cmd = zoneController()
-cmd.printZone(cmd.getZoneById(4))

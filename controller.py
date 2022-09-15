@@ -10,11 +10,11 @@ app_port = 12345
  
 appsock.bind((udp_app,app_port))
  
-UDP_IP_ADDRESS = "127.0.0.1"
-UDP_PORT_NO = 55330
+UDP_IP_ADDRESS = "192.168.0.187"
+UDP_PORT_NO = 21324
 index = 0
 
-zoneC = zoneController()
+zoneC = zoneController.zoneController()
 
 class appZone():
     def __init__(self, index, red, green, blue):
@@ -41,7 +41,9 @@ def parseRawPacket(packet):
     packetLen = len(packet)
     
     if(packetLen == 2):
-        print("Keep-Alive Packet")
+        #print("Keep-Alive Packet")
+        Message = bytearray([1,255])
+        clientSock.sendto (Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
     elif(packetLen > 5):
         zonesChanged = (packetLen-2)//4
         print("LED Command Data for ", zonesChanged, " zones")
@@ -57,7 +59,7 @@ def parseRawPacket(packet):
         wled = []
             #Print test obj
         for cmd in parsedCmd:
-            print("Zone: ", cmd.index, "RGB: ", cmd.red,":",cmd.green,":",cmd.blue)
+            #print("Zone: ", cmd.index, "RGB: ", cmd.red,":",cmd.green,":",cmd.blue)
 
             Message = ledPop(zoneC.getZoneById(cmd.index), cmd.red, cmd.green, cmd.blue)
             clientSock.sendto (Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
@@ -67,7 +69,7 @@ def parseRawPacket(packet):
 
 
 
-        print("End of packet \n\n")
+        print("End of packet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \n")
 
 
     else:
